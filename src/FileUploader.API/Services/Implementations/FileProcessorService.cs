@@ -24,40 +24,58 @@ public class FileProcessorService : IFileProcessorService
         try
         {
             var loanRequestIdString = request.LoanRequestId.ToString();
-
-            // Process passport files
-            var passportFilesLinks = await ProcessFilesAsync(loanRequestIdString,
-                FileExtensions.DocumentTypes.Passport,
-                request.Passports.Distinct());
+            var fileUploadTasks = new List<Task<string>>();
             
-            // Process ghana card files
-            var ghanaCardFilesLinks = await ProcessFilesAsync(loanRequestIdString,
-                FileExtensions.DocumentTypes.GhanaCard,
-                request.GhanaCard.Distinct());
+            // Process passport file
+            if (request.Passport is not null)
+            {
+                fileUploadTasks.Add(SaveFileAsync(loanRequestIdString,
+                    FileExtensions.DocumentTypes.Passport, 
+                    request.Passport));
+            }
             
-            // Process voters id files
-            var voterIdFilesLinks = await ProcessFilesAsync(loanRequestIdString,
-                FileExtensions.DocumentTypes.VoterId,
-                request.VotersId.Distinct());
+            // Process ghana card file
+            if (request.GhanaCard is not null)
+            {
+                fileUploadTasks.Add(SaveFileAsync(loanRequestIdString,
+                    FileExtensions.DocumentTypes.GhanaCard, 
+                    request.GhanaCard));
+            }
+            
+            // Process voters id file
+            if (request.VotersId is not null)
+            {
+                fileUploadTasks.Add(SaveFileAsync(loanRequestIdString,
+                    FileExtensions.DocumentTypes.VoterId, 
+                    request.VotersId));
+            }
             
             // Process nhis files
-            var nhisFilesLinks = await ProcessFilesAsync(loanRequestIdString,
-                FileExtensions.DocumentTypes.Nhis,
-                request.Nhis.Distinct());
+            if (request.Nhis is not null)
+            {
+                fileUploadTasks.Add(SaveFileAsync(loanRequestIdString,
+                    FileExtensions.DocumentTypes.Nhis, 
+                    request.Nhis));
+            }
             
             // Process birth certificates
-            var birthCertificateFileLinks = await ProcessFilesAsync(loanRequestIdString,
-                FileExtensions.DocumentTypes.BirthCertificate,
-                request.BirthCertificates.Distinct());
+            if (request.BirthCertificate is not null)
+            {
+                fileUploadTasks.Add(SaveFileAsync(loanRequestIdString,
+                    FileExtensions.DocumentTypes.BirthCertificate, 
+                    request.BirthCertificate));
+            }
+
+            var fileUploadResponseList = (await Task.WhenAll(fileUploadTasks)).ToList();
             
             var response = new FileUploadResponse
             {
                 LoanRequestId = request.LoanRequestId,
-                Passport = passportFilesLinks,
-                GhanaCard = ghanaCardFilesLinks,
-                VotersId = voterIdFilesLinks,
-                Nhis = nhisFilesLinks,
-                BirthCertificates = birthCertificateFileLinks
+                Passport = fileUploadResponseList.FirstOrDefault(x => x.Contains(FileExtensions.DocumentTypes.Passport)),
+                GhanaCard = fileUploadResponseList.FirstOrDefault(x => x.Contains(FileExtensions.DocumentTypes.GhanaCard)),
+                VotersId = fileUploadResponseList.FirstOrDefault(x => x.Contains(FileExtensions.DocumentTypes.VoterId)),
+                Nhis = fileUploadResponseList.FirstOrDefault(x => x.Contains(FileExtensions.DocumentTypes.Nhis)),
+                BirthCertificate = fileUploadResponseList.FirstOrDefault(x => x.Contains(FileExtensions.DocumentTypes.BirthCertificate))
             };
 
             return CommonResponses.SuccessResponse.CreatedResponse(response, "Files uploaded successfully");
@@ -86,7 +104,7 @@ public class FileProcessorService : IFileProcessorService
         try
         {
             // Check if file is not allowed to be saved
-            if (!file.IsAllowed(_filesConfig.Value.AllowedFiles)) return string.Empty;
+            if (!file.GetFileExtension().IsAllowed(_filesConfig.Value.AllowedFiles)) return string.Empty;
             
             var folderName = FileExtensions.FolderName.GetFolderName(documentType);
             var fileName = $"{loanRequestId}_{documentType}{file.GetFileExtension().ToLower()}";
@@ -108,23 +126,5 @@ public class FileProcessorService : IFileProcessorService
 
             return string.Empty;
         }
-    }
-
-    private async Task<string[]> ProcessFilesAsync(string loanRequestId, string documentType, IEnumerable<IFormFile> files)
-    {
-        var fileLinks = Array.Empty<string>(); 
-        var fileUploadsTaskList = files
-            .Select(file => 
-                SaveFileAsync(loanRequestId, documentType ,file))
-            .ToList();
-
-        if (fileUploadsTaskList.Any())
-        {
-            fileLinks = (await Task.WhenAll(fileUploadsTaskList))
-                .Where(link => !string.IsNullOrEmpty(link))
-                .ToArray();
-        }
-
-        return fileLinks;
     }
 }

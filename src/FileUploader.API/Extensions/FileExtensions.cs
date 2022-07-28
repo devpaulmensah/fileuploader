@@ -38,8 +38,8 @@ public static class FileExtensions
     public static string GetFileExtension(this IFormFile file) => 
         Path.GetExtension(file.FileName);
 
-    public static bool IsAllowed(this IFormFile file, IEnumerable<string> allowedExtensionsList)
+    public static bool IsAllowed(this string extension, IEnumerable<string> allowedExtensionsList)
     {
-        return allowedExtensionsList.Contains(file.GetFileExtension().ToLower());
+        return allowedExtensionsList.Contains(extension);
     }
 }

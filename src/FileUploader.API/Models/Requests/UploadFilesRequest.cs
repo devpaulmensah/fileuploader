@@ -6,9 +6,9 @@ public class UploadFilesRequest
 {
     [Required]
     public Guid LoanRequestId { get; set; }
-    public IFormFile[] Passports { get; set; } = Array.Empty<IFormFile>();
-    public IFormFile[] GhanaCard { get; set; } = Array.Empty<IFormFile>();
-    public IFormFile[] VotersId { get; set; } = Array.Empty<IFormFile>();
-    public IFormFile[] Nhis { get; set; } = Array.Empty<IFormFile>();
-    public IFormFile[] BirthCertificates { get; set; } = Array.Empty<IFormFile>();
+    public IFormFile? Passport { get; set; }
+    public IFormFile? GhanaCard { get; set; }
+    public IFormFile? VotersId { get; set; }
+    public IFormFile? Nhis { get; set; }
+    public IFormFile? BirthCertificate { get; set; }
 }
