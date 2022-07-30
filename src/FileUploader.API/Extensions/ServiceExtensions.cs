@@ -11,7 +11,6 @@ public static class ServiceExtensions
     public static void AddServicesAndConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<FilesConfig>(configuration.GetSection(nameof(FilesConfig)));
-        
         services.AddScoped<IFileProcessorService, FileProcessorService>();
     }
     

@@ -1,7 +1,6 @@
 using System.Text.Json;
 using FileUploader.API.Extensions;
 using FileUploader.API.Middlewares;
-using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 

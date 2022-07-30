@@ -9,6 +9,7 @@ public static class FileExtensions
         public const string VoterId = "voter_id";
         public const string Nhis = "nhis";
         public const string BirthCertificate = "birth_certificate";
+        public const string TestDocument= "TestDocument";
     }
 
     public static class FolderName
@@ -19,6 +20,7 @@ public static class FileExtensions
         private const string Nhis = "NHIS";
         private const string BirthCertificate = "BirthCertificates";
         private const string Others = "Others";
+        private const string TestDocuments = "TestDocuments";
 
         public static string GetFolderName(string documentType)
         {
@@ -29,6 +31,7 @@ public static class FileExtensions
                 DocumentTypes.VoterId => VotersId,
                 DocumentTypes.Nhis => Nhis,
                 DocumentTypes.BirthCertificate => BirthCertificate,
+                DocumentTypes.TestDocument => TestDocuments,
                 _ => Others
             };
         }
@@ -38,8 +41,9 @@ public static class FileExtensions
     public static string GetFileExtension(this IFormFile file) => 
         Path.GetExtension(file.FileName);
 
-    public static bool IsAllowed(this string extension, IEnumerable<string> allowedExtensionsList)
+    public static bool IsAllowed(this string extension)
     {
-        return allowedExtensionsList.Contains(extension);
+        var filesConfig = ConfigurationExtension.GetFilesConfig();
+        return filesConfig.AllowedFilesExtensions.Contains(extension);
     }
 }

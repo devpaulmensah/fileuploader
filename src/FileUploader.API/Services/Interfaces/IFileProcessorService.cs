@@ -6,4 +6,5 @@ namespace FileUploader.API.Services.Interfaces;
 public interface IFileProcessorService
 {
     Task<BaseResponse<FileUploadResponse>> UploadMultipleFilesAsync(UploadFilesRequest request);
+    Task<string> SaveFileAsync(string loanRequestId, string documentType, IFormFile file);
 }

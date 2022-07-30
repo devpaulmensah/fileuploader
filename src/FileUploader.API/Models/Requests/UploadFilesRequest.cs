@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using FileUploader.API.Attributes;
 
 namespace FileUploader.API.Models.Requests;
 
@@ -6,9 +7,19 @@ public class UploadFilesRequest
 {
     [Required]
     public Guid LoanRequestId { get; set; }
-    public IFormFile? Passport { get; set; }
-    public IFormFile? GhanaCard { get; set; }
-    public IFormFile? VotersId { get; set; }
-    public IFormFile? Nhis { get; set; }
-    public IFormFile? BirthCertificate { get; set; }
+    [Required] 
+    [AllowedFileTypesOnly] 
+    public IFormFile Passport { get; set; }
+    [Required] 
+    [AllowedFileTypesOnly] 
+    public IFormFile GhanaCard { get; set; }
+    [Required] 
+    [AllowedFileTypesOnly] 
+    public IFormFile VotersId { get; set; }
+    [Required] 
+    [AllowedFileTypesOnly] 
+    public IFormFile Nhis { get; set; }
+    [Required] 
+    [AllowedFileTypesOnly] 
+    public IFormFile BirthCertificate { get; set; }
 }

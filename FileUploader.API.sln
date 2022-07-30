@@ -4,6 +4,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E4424EB3-ABE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileUploader.API", "src\FileUploader.API\FileUploader.API.csproj", "{E662D728-0D8D-4527-9B9B-F9F3F8A9EB0F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A86E337C-BBF4-42FC-8D9F-98504B65CB15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileUploader.Tests", "tests\FileUploader.Tests\FileUploader.Tests.csproj", "{029E293A-EE01-43F5-AAB8-C6825F5BD7FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,8 +18,13 @@ Global
 		{E662D728-0D8D-4527-9B9B-F9F3F8A9EB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E662D728-0D8D-4527-9B9B-F9F3F8A9EB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E662D728-0D8D-4527-9B9B-F9F3F8A9EB0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{029E293A-EE01-43F5-AAB8-C6825F5BD7FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{029E293A-EE01-43F5-AAB8-C6825F5BD7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{029E293A-EE01-43F5-AAB8-C6825F5BD7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{029E293A-EE01-43F5-AAB8-C6825F5BD7FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E662D728-0D8D-4527-9B9B-F9F3F8A9EB0F} = {E4424EB3-ABE2-45C6-B2FE-481442B8635A}
+		{029E293A-EE01-43F5-AAB8-C6825F5BD7FB} = {A86E337C-BBF4-42FC-8D9F-98504B65CB15}
 	EndGlobalSection
 EndGlobal
